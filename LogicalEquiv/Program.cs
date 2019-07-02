@@ -23,6 +23,7 @@ namespace LogicalEquiv
 
             //TruthTable.Write(statement);
             TruthTable t = new TruthTable(statement);
+            t.Write();
 
             PlayAgain:
             Console.Write("\nWould you like to enter another statement? (Y / N): ");

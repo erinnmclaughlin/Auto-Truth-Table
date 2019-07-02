@@ -18,7 +18,7 @@ namespace LogicalEquiv.Domain
             Propositions = new List<Proposition>();
             Rows = new List<TruthTableRow>();
             InitializePropositions();
-            Write();
+            //Write();
         }
 
         private void InitializePropositions()
