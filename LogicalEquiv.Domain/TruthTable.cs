@@ -45,17 +45,26 @@ namespace LogicalEquiv.Domain
                 Propositions.ForEach(p => Temp.Add(p));
 
                 // Determine the value of the statement given the values of the propositions
-                // Parenthesis not supported yet
-                for (int j = 0; j < Temp.Count() - 1; j++)
+                while(statement.Contains("("))
                 {
-                    int start = statement.IndexOf(Temp[j].Name) + Temp[j].Name.Length;
-                    int length = statement.IndexOf(Temp[j + 1].Name) - start;
+                    // Find innermost "(" ")" pair
+                    int sIndex = -1, eIndex = -1;
+                    for (int j = 0; j < statement.Length; j++)
+                    {
+                        if (statement[j] == '(')
+                            sIndex = j;
+                        else if (statement[j] == ')')
+                        {
+                            eIndex = j;
+                            continue;
+                        }
+                    }
 
-                    // Find operator between two operators
-                    string o = statement.Substring(start, length);
-
-                    // Make next proposition have truth value of the statement
-                    Temp[j + 1] = Logic.TruthValue(Temp[j], Temp[j + 1], o);
+                    // Compute what's inside
+                    string substring = statement.Substring(sIndex + 1, eIndex - sIndex - 1);
+                    Console.WriteLine(substring);
+                    Console.ReadKey();
+                    
                 }
 
                 Console.Write(Temp.Last().Value);
