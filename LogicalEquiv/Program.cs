@@ -11,7 +11,14 @@ namespace LogicalEquiv
         static void Main(string[] args)
         {
             List<Proposition> Propositions = new List<Proposition>();
-            string statement = "p => q";
+
+            Console.WriteLine("This program will generate a truth table for given operations on propositions.");
+            Console.WriteLine("Current supported operations: '&&', '||', '=>'\n");
+            Console.Write("Enter a statement: ");
+
+            string statement = Console.ReadLine();
+
+            Console.WriteLine();
 
             foreach (char c in statement)
             {
