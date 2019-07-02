@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogicalEquiv
+namespace LogicalEquiv.Domain
 {
     public class Proposition
     {
@@ -20,6 +20,18 @@ namespace LogicalEquiv
         public void Negate()
         {
             Value = !Value;
+        }
+
+        public static List<Proposition> GetPropositions(string statement)
+        {
+            List<Proposition> Propositions = new List<Proposition>();
+            foreach (char c in statement)
+            {
+                if (c >= 'a' && c <= 'z')
+                    Propositions.Add(new Proposition(c.ToString(), false));
+            }
+
+            return Propositions;
         }
     }
 }

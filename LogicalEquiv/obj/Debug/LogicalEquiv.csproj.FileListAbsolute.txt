@@ -12,3 +12,6 @@ C:\UVa\CS2102_Discrete_Mathematics\Extra_Credit\LogicalEquiv\LogicalEquiv\obj\De
 C:\UVa\CS2102_Discrete_Mathematics\Extra_Credit\LogicalEquiv\LogicalEquiv\obj\Debug\LogicalEquiv.csproj.CoreCompileInputs.cache
 C:\UVa\CS2102_Discrete_Mathematics\Extra_Credit\LogicalEquiv\LogicalEquiv\obj\Debug\LogicalEquiv.exe
 C:\UVa\CS2102_Discrete_Mathematics\Extra_Credit\LogicalEquiv\LogicalEquiv\obj\Debug\LogicalEquiv.pdb
+C:\UVa\CS2102_Discrete_Mathematics\Extra_Credit\LogicalEquiv\LogicalEquiv\bin\Debug\LogicalEquiv.Domain.dll
+C:\UVa\CS2102_Discrete_Mathematics\Extra_Credit\LogicalEquiv\LogicalEquiv\bin\Debug\LogicalEquiv.Domain.pdb
+C:\UVa\CS2102_Discrete_Mathematics\Extra_Credit\LogicalEquiv\LogicalEquiv\obj\Debug\LogicalEquiv.csproj.CopyComplete
