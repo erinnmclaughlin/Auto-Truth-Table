@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LogicalEquiv.Domain;
 
-namespace LogicalEquiv
+namespace LogicalEquiv.UI
 {
     class Program
     {
