@@ -1,0 +1,7 @@
+C:\UVa\CS2012 Discrete Mathematics\Extra Credit\LogicalEquiv\LogicalEquiv\obj\Debug\LogicalEquiv.csprojAssemblyReference.cache
+C:\UVa\CS2012 Discrete Mathematics\Extra Credit\LogicalEquiv\LogicalEquiv\obj\Debug\LogicalEquiv.csproj.CoreCompileInputs.cache
+C:\UVa\CS2012 Discrete Mathematics\Extra Credit\LogicalEquiv\LogicalEquiv\bin\Debug\LogicalEquiv.exe.config
+C:\UVa\CS2012 Discrete Mathematics\Extra Credit\LogicalEquiv\LogicalEquiv\bin\Debug\LogicalEquiv.exe
+C:\UVa\CS2012 Discrete Mathematics\Extra Credit\LogicalEquiv\LogicalEquiv\bin\Debug\LogicalEquiv.pdb
+C:\UVa\CS2012 Discrete Mathematics\Extra Credit\LogicalEquiv\LogicalEquiv\obj\Debug\LogicalEquiv.exe
+C:\UVa\CS2012 Discrete Mathematics\Extra Credit\LogicalEquiv\LogicalEquiv\obj\Debug\LogicalEquiv.pdb
