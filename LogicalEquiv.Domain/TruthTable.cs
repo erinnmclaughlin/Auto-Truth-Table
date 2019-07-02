@@ -10,13 +10,11 @@ namespace LogicalEquiv.Domain
     {
         public string Statement { get; set; }
         public List<Proposition> Propositions { get; set; }
-        public List<TruthTableRow> Rows { get; set; }
 
         public TruthTable(string statement)
         {
             Statement = statement;
             Propositions = new List<Proposition>();
-            Rows = new List<TruthTableRow>();
             InitializePropositions();
             //Write();
         }

@@ -18,11 +18,8 @@ namespace LogicalEquiv.UI
             GetStatement:
             Console.Write("Enter a statement: ");
 
-            string statement = Console.ReadLine();
+            TruthTable t = new TruthTable(Console.ReadLine());
             Console.WriteLine();
-
-            //TruthTable.Write(statement);
-            TruthTable t = new TruthTable(statement);
             t.Write();
 
             PlayAgain:
