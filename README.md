@@ -6,3 +6,4 @@ This class library was generated as an extra credit project for a Discrete Mathe
 - Add support for "NOT" operator
 - More automatic knowledge of order of operations (i.e., require less parenthesis from user)
 - Verify format of user input
+- Show intermediate steps
