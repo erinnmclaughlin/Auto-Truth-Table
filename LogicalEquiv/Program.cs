@@ -63,14 +63,11 @@ namespace LogicalEquiv
                 }
 
                 // Determine the value of the statement given the values of the propositions
-                // Parenthesis not supported yet
                 for (int j = 0; j < Temp.Count() - 1; j++)
                 {
-                    // Find operator between two operators
                     string o = statement.Substring(statement.IndexOf(Temp[j].Name) + 1,
                         statement.IndexOf(Temp[j + 1].Name) - statement.IndexOf(Temp[j].Name) - 1);
 
-                    // Figure out what to do
                     switch(o)
                     {
                         case "&&":
@@ -84,7 +81,6 @@ namespace LogicalEquiv
                             break;
                     }
 
-                    // Make next proposition have truth value of the statement
                     Temp[j + 1] = new Proposition(Temp[j+1].Name, val);
                 }
 
