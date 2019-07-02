@@ -38,8 +38,7 @@ namespace LogicalEquiv
                     goto PlayAgain;
             }
 
-            Console.WriteLine("\nrt" +
-                "\nThanks for playing! Press any key to exit.");
+            Console.WriteLine("\nThanks for playing! Press any key to exit.");
             Console.ReadKey();
             
         }
