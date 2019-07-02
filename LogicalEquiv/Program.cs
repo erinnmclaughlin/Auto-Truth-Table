@@ -21,7 +21,8 @@ namespace LogicalEquiv
             string statement = Console.ReadLine();
             Console.WriteLine();
 
-            TruthTable.Write(statement);
+            //TruthTable.Write(statement);
+            TruthTable t = new TruthTable(statement);
 
             PlayAgain:
             Console.Write("\nWould you like to enter another statement? (Y / N): ");
