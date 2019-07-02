@@ -12,12 +12,9 @@ namespace LogicalEquiv.Domain
         public List<Proposition> Propositions { get; set; }
         public List<TruthTableRow> Rows { get; set; }
 
-        private string SimplifiedStatement { get; set; }
-
         public TruthTable(string statement)
         {
             Statement = statement;
-            SimplifiedStatement = statement;
             Propositions = new List<Proposition>();
             Rows = new List<TruthTableRow>();
             InitializePropositions();
@@ -37,23 +34,17 @@ namespace LogicalEquiv.Domain
             }
         }
 
-        private List<Proposition> FilterPropositions(string statement, List<Proposition> p)
+        private List<Proposition> FilteredPropositions(string statement, List<Proposition> all)
         {
-            List<Proposition> props = new List<Proposition>();
-
-            foreach (var prop in Propositions)
+            List<Proposition> fList = new List<Proposition>();
+            
+            foreach(var prop in all)
             {
-                if (statement.Contains(prop.Name) && !p.Contains(prop))
-                    props.Add(prop);
+                if (statement.Contains(prop.Name))
+                    fList.Add(prop);
             }
 
-            foreach(var prop in p)
-            {
-                if (statement.Contains(prop.Name) && prop.Name.Length == 1)
-                    props.Add(prop);
-            }
-
-            return props;
+            return fList;
         }
 
         public void Write()
@@ -88,7 +79,14 @@ namespace LogicalEquiv.Domain
 
                 // Determine the value of the statement given the values of the propositions
                 string tempStatement = Statement;
-                List<Proposition> tempPropositions = Propositions;
+                List<Proposition> tempPropositions = new List<Proposition>();
+                List<Proposition> allPropositions = new List<Proposition>();
+                
+                foreach (var p in Propositions)
+                {
+                    tempPropositions.Add(p);
+                    allPropositions.Add(p);
+                }
 
                 char newProp = 'A';
                 while (tempStatement.Contains("("))
@@ -106,17 +104,22 @@ namespace LogicalEquiv.Domain
                         }
                     }
 
-                    // Compute what's inside
-                    // Something here isn't working bc passing too many props for a given statement, fix later
+                    // Get what's inside
                     string substring = tempStatement.Substring(sIndex + 1, eIndex - sIndex - 1);
-                    tempPropositions = FilterPropositions(substring, tempPropositions);
 
-                    tempPropositions.Add(new Proposition(newProp.ToString(), Logic.Compute(substring, tempPropositions)));
-                    tempStatement = tempStatement.Replace("(" + substring + ")", tempPropositions.Last().Name);
-                    tempPropositions = FilterPropositions(tempStatement, tempPropositions);
+                    // Get list of propositions that exist in the substring
+                    tempPropositions = FilteredPropositions(substring, allPropositions);
+
+                    // Create a new proposition with the value of what was inside the parenthesis; add to list of all propositions
+                    allPropositions.Add(new Proposition(newProp.ToString(), Logic.Compute(substring, tempPropositions)));
+
+                    // Replace the statement in parenthesis with the new proposition that represents it
+                    tempStatement = tempStatement.Replace("(" + substring + ")", allPropositions.Last().Name);
+
                     newProp++;
                 }
 
+                tempPropositions = FilteredPropositions(tempStatement, allPropositions);
                 Console.Write(Logic.Compute(tempStatement, tempPropositions));
                 Console.WriteLine();
             }
