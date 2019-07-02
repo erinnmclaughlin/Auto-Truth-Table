@@ -34,6 +34,7 @@ namespace LogicalEquiv.Domain
             }
         }
 
+        //-- Given a list of propositions, return only the ones that are in a given statement
         private List<Proposition> FilteredPropositions(string statement, List<Proposition> all)
         {
             List<Proposition> fList = new List<Proposition>();
@@ -47,6 +48,7 @@ namespace LogicalEquiv.Domain
             return fList;
         }
 
+        //-- Write truth table to console
         public void Write()
         {
             foreach (var prop in Propositions)
@@ -65,6 +67,13 @@ namespace LogicalEquiv.Domain
                 for (int j = 0; j < Propositions.Count(); j++)
                 {
                     // Determine if the value should change for the given row
+                    
+                    /*
+                        Last proposition switches every row, second to last proposition switches every 2 rows,
+                        third to last switches every 4 rows, etc. so the nth proposition will switch if the row number is
+                        evenly divisible by 2 to the number of "spaces" away from the last space it is
+                     */
+
                     if (i % Math.Pow(2, j) == 0)
                         Propositions[Propositions.Count() - 1 - j].Value
                             = !Propositions[Propositions.Count() - 1 - j].Value;
@@ -72,12 +81,9 @@ namespace LogicalEquiv.Domain
                 }
 
                 // Write the values of the propositions
-                foreach (var prop in Propositions)
-                {
-                    Console.Write($"{prop.Value}\t");
-                }
+                Propositions.ForEach(p => Console.Write($"{p.Value}\t"));
 
-                // Determine the value of the statement given the values of the propositions
+
                 string tempStatement = Statement;
                 List<Proposition> tempPropositions = new List<Proposition>();
                 List<Proposition> allPropositions = new List<Proposition>();
@@ -88,7 +94,8 @@ namespace LogicalEquiv.Domain
                     allPropositions.Add(p);
                 }
 
-                char newProp = 'A';
+                // Parse through parenthesis, if any
+                char newProp = 'A'; // starting index to name new propositions
                 while (tempStatement.Contains("("))
                 {
                     // Find innermost "(" ")" pair
@@ -119,8 +126,7 @@ namespace LogicalEquiv.Domain
                     newProp++;
                 }
 
-                tempPropositions = FilteredPropositions(tempStatement, allPropositions);
-                Console.Write(Logic.Compute(tempStatement, tempPropositions));
+                Console.Write(Logic.Compute(tempStatement, FilteredPropositions(tempStatement, allPropositions)));
                 Console.WriteLine();
             }
         }

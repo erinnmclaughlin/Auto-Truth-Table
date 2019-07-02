@@ -13,19 +13,27 @@ namespace LogicalEquiv.Domain
             if (propositions.Count() == 1)
                 return propositions[0].Value;
 
-            for (int j = 0; j < propositions.Count() - 1; j++)
+            // Put proposition list in order that it appears in statement
+            List<Proposition> temp = new List<Proposition>();
+            foreach (char c in statement)
             {
-                int start = statement.IndexOf(propositions[j].Name) + propositions[j].Name.Length;
-                int length = statement.IndexOf(propositions[j + 1].Name) - start;
+                if (propositions.Where(p => p.Name == c.ToString()).Count() > 0)
+                    temp.Add(propositions.Where(p => p.Name == c.ToString()).FirstOrDefault());
+            }
+
+            for (int j = 0; j < temp.Count() - 1; j++)
+            {
+                int start = statement.IndexOf(temp[j].Name) + temp[j].Name.Length;
+                int length = statement.IndexOf(temp[j + 1].Name) - start;
 
                 // Find operator between two operators
                 string o = statement.Substring(start, length);
 
                 // Make next proposition have truth value of the statement
-                propositions[j + 1] = TruthValue(propositions[j], propositions[j + 1], o);
+                temp[j + 1] = TruthValue(temp[j], temp[j + 1], o);
             }
 
-            return propositions.Last().Value;
+            return temp.Last().Value;
         }
 
         public static Proposition TruthValue (Proposition p, Proposition q, string o)
@@ -56,6 +64,9 @@ namespace LogicalEquiv.Domain
                     break;
                 case "NOR":
                     val = p.Value == false && q.Value == false;
+                    break;
+                case "!&&":
+                    val = p.Value == false || q.Value == false;
                     break;
             }
 
