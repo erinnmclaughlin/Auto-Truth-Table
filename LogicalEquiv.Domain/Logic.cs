@@ -26,17 +26,17 @@ namespace LogicalEquiv.Domain
                 int start = statement.IndexOf(temp[j].Name) + temp[j].Name.Length;
                 int length = statement.IndexOf(temp[j + 1].Name) - start;
 
-                // Find operator between two operators
+                // Find operator between two propositions
                 string o = statement.Substring(start, length);
 
                 // Make next proposition have truth value of the statement
-                temp[j + 1] = TruthValue(temp[j], temp[j + 1], o);
+                temp[j + 1] = Reduce(temp[j], temp[j + 1], o);
             }
 
             return temp.Last().Value;
         }
 
-        public static Proposition TruthValue (Proposition p, Proposition q, string o)
+        private static Proposition Reduce (Proposition p, Proposition q, string o)
         {
             bool val = false;
 

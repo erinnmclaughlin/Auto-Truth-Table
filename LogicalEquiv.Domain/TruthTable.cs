@@ -14,9 +14,7 @@ namespace LogicalEquiv.Domain
         public TruthTable(string statement)
         {
             Statement = statement;
-            Propositions = new List<Proposition>();
             InitializePropositions();
-            //Write();
         }
 
         private void InitializePropositions()
@@ -69,7 +67,14 @@ namespace LogicalEquiv.Domain
                     /*
                         Last proposition switches every row, second to last proposition switches every 2 rows,
                         third to last switches every 4 rows, etc. so the nth proposition will switch if the row number is
-                        evenly divisible by 2 to the number of "spaces" away from the last space it is
+                        evenly divisible by 2 to the number of "spaces" away from the last space it is. I.e.:
+
+                        The last prop is 0 spaces away from last prop, so this prop's value will change when the row number is
+                        divisible by 2^0, so it'll change everytime.
+
+                        The third to last prop is 2 spaces away from the last prop, so this prop's value will change with the
+                        row number is divisible by 2^2, so it'll change every four rows.
+                        
                      */
 
                     if (i % Math.Pow(2, j) == 0)
@@ -81,7 +86,6 @@ namespace LogicalEquiv.Domain
                 // Write the values of the propositions
                 Propositions.ForEach(p => Console.Write($"{p.Value}\t"));
 
-
                 string tempStatement = Statement;
                 List<Proposition> tempPropositions = new List<Proposition>();
                 List<Proposition> allPropositions = new List<Proposition>();
@@ -92,11 +96,13 @@ namespace LogicalEquiv.Domain
                     allPropositions.Add(p);
                 }
 
-                // Parse through parenthesis, if any
-                char newProp = 'A'; // starting index to name new propositions
+                //-- Starting index to name new propositions
+                char newProp = 'A';
+
+                //-- Parse through parenthesis, if any
                 while (tempStatement.Contains("("))
                 {
-                    // Find innermost "(" ")" pair
+                    //-- Find innermost "(" ")" pair
                     int sIndex = -1, eIndex = -1;
                     for (int j = 0; j < tempStatement.Length; j++)
                     {
@@ -109,16 +115,17 @@ namespace LogicalEquiv.Domain
                         }
                     }
 
-                    // Get what's inside
+                    //-- Get what's inside
                     string substring = tempStatement.Substring(sIndex + 1, eIndex - sIndex - 1);
 
-                    // Get list of propositions that exist in the substring
+                    //-- Get list of propositions that exist in the substring
                     tempPropositions = FilteredPropositions(substring, allPropositions);
 
-                    // Create a new proposition with the value of what was inside the parenthesis; add to list of all propositions
+                    //-- Create a new proposition with the value of what was inside the parenthesis
+                    //-- Add to list of all propositions
                     allPropositions.Add(new Proposition(newProp.ToString(), Logic.Compute(substring, tempPropositions)));
 
-                    // Replace the statement in parenthesis with the new proposition that represents it
+                    //-- Replace the statement in parenthesis with the new proposition that represents it
                     tempStatement = tempStatement.Replace("(" + substring + ")", allPropositions.Last().Name);
 
                     newProp++;
