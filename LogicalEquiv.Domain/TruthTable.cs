@@ -44,6 +44,56 @@ namespace LogicalEquiv.Domain
             return fList;
         }
 
+        private bool ParseParenthesis()
+        {
+            string tempStatement = Statement.Replace(" ", "");
+            List<Proposition> tempPropositions = new List<Proposition>();
+            List<Proposition> allPropositions = new List<Proposition>();
+
+            foreach (var p in Propositions)
+            {
+                tempPropositions.Add(p);
+                allPropositions.Add(p);
+            }
+
+            //-- Starting index to name new propositions
+            char newProp = 'A';
+
+            //-- Parse through parenthesis, if any
+            while (tempStatement.Contains("("))
+            {
+                //-- Find innermost "(" ")" pair
+                int sIndex = -1, eIndex = -1;
+                for (int j = 0; j < tempStatement.Length; j++)
+                {
+                    if (tempStatement[j] == '(')
+                        sIndex = j;
+                    else if (tempStatement[j] == ')')
+                    {
+                        eIndex = j;
+                        break;
+                    }
+                }
+
+                //-- Get what's inside
+                string substring = tempStatement.Substring(sIndex + 1, eIndex - sIndex - 1);
+
+                //-- Get list of propositions that exist in the substring
+                tempPropositions = FilteredPropositions(substring, allPropositions);
+
+                //-- Create a new proposition with the value of what was inside the parenthesis
+                //-- Add to list of all propositions
+                allPropositions.Add(new Proposition(newProp.ToString(), Logic.Compute(substring, tempPropositions)));
+
+                //-- Replace the statement in parenthesis with the new proposition that represents it
+                tempStatement = tempStatement.Replace("(" + substring + ")", allPropositions.Last().Name);
+
+                newProp++;
+            }
+
+            return Logic.Compute(tempStatement, FilteredPropositions(tempStatement, allPropositions));
+        }
+
         //-- Write truth table to console
         public void Write()
         {
@@ -53,8 +103,6 @@ namespace LogicalEquiv.Domain
             }
 
             Console.Write($"{Statement}\n");
-
-            Statement = Statement.Replace(" ", "");
 
             // Loop through all possible scenarios, creating 2^n rows
             for (int i = 0; i < Math.Pow(2, Propositions.Count()); i++)
@@ -86,52 +134,7 @@ namespace LogicalEquiv.Domain
                 // Write the values of the propositions
                 Propositions.ForEach(p => Console.Write($"{p.Value}\t"));
 
-                string tempStatement = Statement;
-                List<Proposition> tempPropositions = new List<Proposition>();
-                List<Proposition> allPropositions = new List<Proposition>();
-                
-                foreach (var p in Propositions)
-                {
-                    tempPropositions.Add(p);
-                    allPropositions.Add(p);
-                }
-
-                //-- Starting index to name new propositions
-                char newProp = 'A';
-
-                //-- Parse through parenthesis, if any
-                while (tempStatement.Contains("("))
-                {
-                    //-- Find innermost "(" ")" pair
-                    int sIndex = -1, eIndex = -1;
-                    for (int j = 0; j < tempStatement.Length; j++)
-                    {
-                        if (tempStatement[j] == '(')
-                            sIndex = j;
-                        else if (tempStatement[j] == ')')
-                        {
-                            eIndex = j;
-                            break;
-                        }
-                    }
-
-                    //-- Get what's inside
-                    string substring = tempStatement.Substring(sIndex + 1, eIndex - sIndex - 1);
-
-                    //-- Get list of propositions that exist in the substring
-                    tempPropositions = FilteredPropositions(substring, allPropositions);
-
-                    //-- Create a new proposition with the value of what was inside the parenthesis
-                    //-- Add to list of all propositions
-                    allPropositions.Add(new Proposition(newProp.ToString(), Logic.Compute(substring, tempPropositions)));
-
-                    //-- Replace the statement in parenthesis with the new proposition that represents it
-                    tempStatement = tempStatement.Replace("(" + substring + ")", allPropositions.Last().Name);
-
-                    newProp++;
-                }
-
-                Console.Write(Logic.Compute(tempStatement, FilteredPropositions(tempStatement, allPropositions)));
+                Console.Write(ParseParenthesis());
                 Console.WriteLine();
             }
         }

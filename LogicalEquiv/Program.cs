@@ -13,7 +13,7 @@ namespace LogicalEquiv.UI
         {
             Console.WriteLine("This program will generate a truth table for given operations on propositions.");
             Console.WriteLine("Note that only lowercase letters will be recognized as propositions.");
-            Console.WriteLine("Current supported operations: '&&', '||', '=>', '<=>', '==', 'XOR', 'NOR', !&&\n");
+            Console.WriteLine("Current supported operations: '~', '&&', '||', '=>', '<=>', '==', 'XOR', 'NOR', '!&&'\n");
 
             GetStatement:
             Console.Write("Enter a statement: ");

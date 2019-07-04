@@ -10,8 +10,23 @@ namespace LogicalEquiv.Domain
     {
         public static bool Compute (string statement, List<Proposition> propositions)
         {
-            if (propositions.Count() == 1)
-                return propositions[0].Value;
+            // Look for 'not' operator
+            char tempChar = '1';
+
+            while(statement.Contains("~"))
+            {
+                for(int i = 0; i < statement.Length - 1; i++)
+                {
+                    if (statement[i] == '~' && statement[i + 1] >= '0' && statement[i + 1] <= 'z')
+                    {
+                        bool val = propositions.Where(p => p.Name == statement[i + 1].ToString()).FirstOrDefault().Value;
+                        propositions.Add(new Proposition(tempChar.ToString(), !val));
+                        statement = statement.Replace($"~{statement[i+1]}", tempChar.ToString());
+                        tempChar++;
+                        i = -1;
+                    }
+                }
+            }
 
             // Put proposition list in order that it appears in statement
             List<Proposition> temp = new List<Proposition>();
