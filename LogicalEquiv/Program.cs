@@ -32,6 +32,7 @@ namespace LogicalEquiv.UI
                     Console.WriteLine($"\nA file has been output to: {path}");
                     break;
                 case "N":
+                    Console.WriteLine();
                     t.Write();
                     break;
                 default:
