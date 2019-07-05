@@ -8,3 +8,4 @@ This class library was generated as an extra credit project for a Discrete Mathe
 - Verify format of user input
 - Show intermediate steps
 - Create web interface for demo using github pages
+- Indicate when statement is a tautology
