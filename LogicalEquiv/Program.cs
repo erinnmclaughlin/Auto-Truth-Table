@@ -18,11 +18,9 @@ namespace LogicalEquiv.UI
             GetStatement:
             Console.Write("Enter a statement: ");
             TruthTable t = new TruthTable(Console.ReadLine());
-            Console.WriteLine();
-
-            Console.Write("Would you like a CSV file with the results? (Y / N): ");
 
             FileOrConsole:
+            Console.Write("\nWould you like a CSV file with the results? (Y / N): ");
             switch(Console.ReadLine().ToUpper())
             {
                 case "Y":
