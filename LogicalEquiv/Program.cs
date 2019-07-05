@@ -17,10 +17,27 @@ namespace LogicalEquiv.UI
 
             GetStatement:
             Console.Write("Enter a statement: ");
-
             TruthTable t = new TruthTable(Console.ReadLine());
             Console.WriteLine();
-            t.Write();
+
+            Console.Write("Would you like a CSV file with the results? (Y / N): ");
+
+            FileOrConsole:
+            switch(Console.ReadLine().ToUpper())
+            {
+                case "Y":
+                    Console.Write("\nSpecify file path: ");
+                    var path = Console.ReadLine();
+                    t.Write(path);
+                    Console.WriteLine($"\nA file has been output to: {path}");
+                    break;
+                case "N":
+                    t.Write();
+                    break;
+                default:
+                    Console.WriteLine("\nInput not recognized. Please try again.");
+                    goto FileOrConsole;
+            }
 
             PlayAgain:
             Console.Write("\nWould you like to enter another statement? (Y / N): ");

@@ -21,17 +21,5 @@ namespace LogicalEquiv.Domain
         {
             Value = !Value;
         }
-
-        public static List<Proposition> GetPropositions(string statement)
-        {
-            List<Proposition> Propositions = new List<Proposition>();
-            foreach (char c in statement)
-            {
-                if (c >= 'a' && c <= 'z')
-                    Propositions.Add(new Proposition(c.ToString(), false));
-            }
-
-            return Propositions;
-        }
     }
 }

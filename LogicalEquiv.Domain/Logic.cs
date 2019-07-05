@@ -1,58 +1,80 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LogicalEquiv.Domain
 {
     public class Logic
     {
-        public static bool Compute (string statement, List<Proposition> propositions)
+        //-- takes a statement and a list of propositions and returns a value
+        public static bool Compute (string statement, List<Proposition> Propositions)
         {
-            // Look for 'not' operator
-            char tempChar = '1';
-
-            while(statement.Contains("~"))
+            List<Proposition> propositions = new List<Proposition>(Propositions);
+            statement = statement.Replace(" ", "");
+            char tempPropName = 'A';
+            
+            while(statement.Contains("(") || statement.Contains("~"))
             {
-                for(int i = 0; i < statement.Length - 1; i++)
+                // Look for 'not' operator
+                foreach (Match r in Regex.Matches(statement, @"\~[a-zA-Z]"))
                 {
-                    if (statement[i] == '~' && statement[i + 1] >= '0' && statement[i + 1] <= 'z')
+                    bool val = !propositions.Where(prop => prop.Name == statement[statement.IndexOf(r.Value) + 1].ToString()).FirstOrDefault().Value;
+                    propositions.Add(new Proposition(tempPropName.ToString(), val));
+                    var regex = new Regex(Regex.Escape(r.Value));
+                    statement = regex.Replace(statement, tempPropName.ToString(), 1);
+                    tempPropName++;
+                }
+
+                // Look for parenthesis
+                while (statement.Contains("("))
+                {
+                    //-- Find innermost "(" ")" pair
+                    int sIndex = -1, eIndex = -1;
+                    for (int j = 0; j < statement.Length; j++)
                     {
-                        bool val = propositions.Where(p => p.Name == statement[i + 1].ToString()).FirstOrDefault().Value;
-                        propositions.Add(new Proposition(tempChar.ToString(), !val));
-                        statement = statement.Replace($"~{statement[i+1]}", tempChar.ToString());
-                        tempChar++;
-                        i = -1;
+                        if (statement[j] == '(')
+                            sIndex = j;
+                        else if (statement[j] == ')')
+                        {
+                            eIndex = j;
+                            break;
+                        }
                     }
+
+                    //-- Get what's inside
+                    string substring = statement.Substring(sIndex + 1, eIndex - sIndex - 1);
+
+                    //-- Go to beginning of outer for loop if there's a "not" operator
+                    if (substring.Contains("~"))
+                        break;
+
+                    //-- Compute that value of that & make new proposition to represent that substring
+                    propositions.Add(new Proposition(tempPropName.ToString(), Reduce(substring, propositions)));
+
+                    //-- Replace statement in parenethesis with new statement that represents it
+                    statement = statement.Replace($"({substring})", tempPropName.ToString());
+
+                    //-- Increment tempPropName
+                    tempPropName++;
+
                 }
             }
 
-            // Put proposition list in order that it appears in statement
-            List<Proposition> temp = new List<Proposition>();
-            foreach (char c in statement)
-            {
-                if (propositions.Where(p => p.Name == c.ToString()).Count() > 0)
-                    temp.Add(propositions.Where(p => p.Name == c.ToString()).FirstOrDefault());
-            }
+            return Reduce(statement, propositions);
 
-            for (int j = 0; j < temp.Count() - 1; j++)
-            {
-                int start = statement.IndexOf(temp[j].Name) + temp[j].Name.Length;
-                int length = statement.IndexOf(temp[j + 1].Name) - start;
-
-                // Find operator between two propositions
-                string o = statement.Substring(start, length);
-
-                // Make next proposition have truth value of the statement
-                temp[j + 1] = Reduce(temp[j], temp[j + 1], o);
-            }
-
-            return temp.Last().Value;
         }
 
-        private static Proposition Reduce (Proposition p, Proposition q, string o)
+        //-- Evaluates statements without parenthesis
+        private static bool Reduce (string s, List<Proposition> props)
         {
+            if (s.Length == 1)
+                return props.Where(prop => prop.Name == s).FirstOrDefault().Value;
+
+            Proposition p = props.Where(prop => prop.Name == s[0].ToString()).FirstOrDefault();
+            Proposition q = props.Where(prop => prop.Name == s[s.Length - 1].ToString()).FirstOrDefault();
+            string o = s.Substring(1, s.Length - 2);
             bool val = false;
 
             // Figure out what to do
@@ -85,7 +107,7 @@ namespace LogicalEquiv.Domain
                     break;
             }
 
-            return new Proposition($"{p.Name}{o}{q.Name}", val);
+            return val;
 
         }
     }
