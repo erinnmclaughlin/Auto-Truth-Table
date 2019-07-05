@@ -66,7 +66,15 @@ namespace LogicalEquiv.Domain
 
         public void Write(string path)
         {
-            path += "\\output.csv";
+            //-- Ensure file doesn't get overwritten
+            int num = 1;
+            string filename = "\\output.csv";
+            while (File.Exists(path + filename))
+            {
+                filename = $"\\output({num}).csv";
+                num++;
+            }
+            path = path + filename;
             var csv = "";
 
             //-- List out statements
