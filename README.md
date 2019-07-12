@@ -4,7 +4,7 @@ This class library was generated as an extra credit project for a Discrete Mathe
 
 Note that **_using parenthesis is extremely important for the program to compute the correct answer_**. For example, `~(p || q) == ~p && ~q` will register to be always false, while `(~(p || q)) == (~p && ~q)` will register to be a tautology. This may or may not be improved upon in the near future, but (regardless) it will always be safer to over-use parenthesis!
 
-Note that some sample CSV outputs can be found in the `DemoOutputs` directory.
+Note that some sample CSV outputs can be found in the [Demo Outputs](https://github.com/erinnmclaughlin/Auto-Truth-Table/tree/master/DemoOutputs) directory.
 
 #### Potential Future Improvements:
 - More automatic knowledge of order of operations (i.e., require less parenthesis from user)
